@@ -35,7 +35,7 @@ def calcVelocity(a: Point, b: Point):
 def main():
    clicks = 0
    df1 = pd.DataFrame(pd.read_csv('data.csv'))
-   print(df1)
+   #print(df1)
    while True:     
       for event in pygame.event.get():
             if event.type == QUIT:
@@ -53,12 +53,16 @@ def main():
                     endpoint = f'X: {pointB.x_coord} Y: {pointB.y_coord}'
                     print(startpoint)
                     data = {
-                        'Startpunkt': startpoint,
-                        'Startzeit': pointA.time,
-                        'Endpunkt': endpoint,
-                        'Endzeit': pointB.time
+                        'Startpunkt': [startpoint],
+                        'Startzeit': [pointA.time.strftime("%m/%d/%Y, %H:%M:%S:%f")],
+                        'Endpunkt': [endpoint],
+                        'Endzeit': [pointB.time.strftime("%m/%d/%Y, %H:%M:%S:%f")]
                     }
-                    print(data)
+                    
+                    df2 = pd.DataFrame(data)
+                    df1 = df1.append(df2, ignore_index=True, sort=False)
+                    df1.to_csv('data.csv')
+                    print(df1)
                     print('add even point')
                else:
                     pointA = Point(pos[0], pos[1])
